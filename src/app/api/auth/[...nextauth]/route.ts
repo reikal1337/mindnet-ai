@@ -20,17 +20,18 @@ export const authOptions: NextAuthOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       credentials: {
         username: { label: "Username", type: "text", placeholder: "username..." },
-        password: {  label: "Password", type: "password" }
+        email: {label: "Email", type: "email", placeholder: "youremail@email.com"},
+        password: {  label: "Password", type: "password", placeholder: "password..." }
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const user = {id: '1', name: "Tommy", username: "tommy89"}
         return user
       }
     })
   ],
-  pages: {
-    signIn: "/login"
-  }
+  // pages: {
+  //   signIn: "/login"
+  // }
 }
 
 

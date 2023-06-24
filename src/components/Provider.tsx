@@ -1,7 +1,6 @@
 "use client"
 
 import { SessionProvider } from "next-auth/react"
-import { HtmlProps } from "next/dist/shared/lib/html-context"
 import { ReactNode} from "react"
 
 type Props = {
