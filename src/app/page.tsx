@@ -2,8 +2,6 @@ import Image from 'next/image'
 import styles from './page.module.css'
 import { getServerSession } from 'next-auth'
 import { authOptions } from './api/auth/[...nextauth]/route'
-import User from './User'
-
 
 export default async function Home() {
 

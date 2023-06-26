@@ -1,8 +1,12 @@
-import React from 'react'
+import RegisterForm from "@/components/(auth)/register/RegisterForm"
 
 function Register() {
+  
   return (
-    <div>Register</div>
+    <>
+    <h1>Register</h1>
+    <RegisterForm />
+    </>
   )
 }
 

@@ -1,11 +1,13 @@
 import NextAuth, { type NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@/lib/prismaClient";
+import type { Adapter } from "next-auth/adapters"
+
 
 export const authOptions: NextAuthOptions = {
-  session: {
-    strategy: "jwt"
-  },
+  adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     // GoogleProvider({
     //     clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -19,13 +21,12 @@ export const authOptions: NextAuthOptions = {
       // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "username..." },
         email: {label: "Email", type: "email", placeholder: "youremail@email.com"},
         password: {  label: "Password", type: "password", placeholder: "password..." }
       },
-      async authorize(credentials) {
-        const user = {id: '1', name: "Tommy", username: "tommy89"}
-        return user
+      async authorize(credentials, req) {
+        // const {email,password} = credentials
+        
       }
     })
   ],
