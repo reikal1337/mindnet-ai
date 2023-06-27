@@ -1,6 +1,6 @@
 type RegisterUser = {
-    username: String,
-    email: String,
-    password: String,
-    repPassword: String
+    username: string,
+    email: string,
+    password: string,
+    repPassword?: string
 }

@@ -1,4 +1,6 @@
 "use client"
+import { isValidPassword, isValidUsername, passowrdRegex, usernameRegex } from '@/lib/validation/auth'
+import { register } from '@/service/auth'
 import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 
@@ -10,18 +12,54 @@ const [formData,setFormData] = useState<RegisterUser>({
     repPassword: "",
     })
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+const [error,setError] = useState<string>("")
 
-    setFormData({
-        ...formData,
-        [e.target.name]: e.target.value
-    })
-    }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target
+        if(name === "username" ){
+            if(usernameRegex(value)){
+                console.log(value)
+                setFormData({
+                    ...formData,
+                    [name]: value
+                })
+                }else{
+                    return null
+                }
+            }
+        if(name === "password" || name === "repPassword"){
+            if(passowrdRegex(value)){
+                setFormData({
+                    ...formData,
+                    [name]: value
+                })
+                }else{
+                    return null
+                }
+            }
+            setFormData({
+                ...formData,
+                [name]: value
+            })
+        }
+    
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(formData)
-        signIn("crediantials",{ email: formData.email,password: formData.password })
+        if(formData.password === formData.repPassword){
+            if(isValidUsername(formData.username)){
+                if(isValidPassword(formData.password)){
+                    register(formData)
+                }else{
+                    setError(`Passowrd must be 6-15 and only contain a-z, A-Z, 0-9, (~\`!@#$%^&*()_-+={[}]|:;"'<,>.?/)`)
+                }
+            }else{
+                setError("Username must be 5-15 and only contain a-z,A-Z,0-9")
+            }
+        }else{
+            setError("Passwords have to match!")
+        }
+        
     }
 
 return (
@@ -33,6 +71,7 @@ return (
         type="email"
         placeholder='youremail@email.com'
         onChange={handleChange}
+        value={formData.email}
         required
         />
         {/* Temporary */}
@@ -43,7 +82,10 @@ return (
         id="username"
         type="text"
         placeholder="username..."
+        minLength={5}
+        maxLength={15}
         onChange={handleChange}
+        value={formData.username}
         required
         />
         {/* Temporary */}
@@ -54,7 +96,10 @@ return (
         id="password"
         type="password"
         placeholder="password..."
+        minLength={6}
+        maxLength={15}
         onChange={handleChange}
+        value={formData.password}
         required
         />
         {/* Temporary */}
@@ -64,12 +109,16 @@ return (
         name="repPassword"
         id="repPassword"
         type="password"
-        placeholder="repPassword..."
+        placeholder="repeat password..."
+        minLength={6}
+        maxLength={15}
         onChange={handleChange}
+        value={formData.repPassword}
         required
         />
         {/* Temporary */}
         <br/> 
+        <label>{error}</label>
         <button type='submit'>Register</button>
     </form>
 )
