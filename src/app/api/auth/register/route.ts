@@ -8,9 +8,7 @@ export async function POST(req: Request, res: Response){
     const body = await req.json()
 
     const {email, username, password} = body
-    console.log(email)
     if(!username || !email || !password) return NextResponse.json({message: "Missing data!"}, {status: 406, statusText: "1"})
-    //Also need to add validation...
     const userExists = await prisma.user.findUnique({
         where: {
             username: username

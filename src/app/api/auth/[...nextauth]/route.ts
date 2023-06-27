@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prismaClient";
 import type { Adapter } from "next-auth/adapters"
+import { login } from "@/service/auth";
 
 
 export const authOptions: NextAuthOptions = {
@@ -16,7 +17,7 @@ export const authOptions: NextAuthOptions = {
     // ),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: 'Log in',
+      name: 'credentials',
       // The credentials is used to generate a suitable form on the sign in page.
       // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.
@@ -25,14 +26,29 @@ export const authOptions: NextAuthOptions = {
         password: {  label: "Password", type: "password", placeholder: "password..." }
       },
       async authorize(credentials, req) {
-        // const {email,password} = credentials
-        
+        const {email, password } = credentials as LoginUser
+          const isAuthenticated = await login(email, password)
+          if(isAuthenticated){
+            console.log("Logged in!")
+            return credentials
+          }
+          console.log("Didin't log in!")
+          return null
       }
     })
   ],
-  // pages: {
-  //   signIn: "/login"
-  // }
+  callbacks: {
+    async signIn(user, account, profile) {
+      // Custom signIn callback
+      // This callback is called after a successful sign-in
+
+      // Redirect the user to the home page
+      return 'http://localhost:3000/';
+    }
+  },
+  pages: {
+    signIn: "/login"
+  }
 }
 
 

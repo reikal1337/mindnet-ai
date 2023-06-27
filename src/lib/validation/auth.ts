@@ -16,11 +16,11 @@ export function isValidPassword(password: string): boolean{
 }
 
 export function usernameRegex(username: string): boolean{
-    const regex = /^[a-zA-Z0-9]+$/;
+    const regex = /^[a-zA-Z0-9]*$/;
     return regex.test(username);
 }
 
 export function passowrdRegex(password: string): boolean{
-    const regex = /[a-zA-Z0-9~`!@#$%^&*()_\-+={[}\]|:;"'<,>.?/]/;
+    const regex = /^[a-zA-Z0-9~`!@#$%^&*()_\-+={[}\]|:;"'<,>.?/]*$/;
     return regex.test(password);
 }
