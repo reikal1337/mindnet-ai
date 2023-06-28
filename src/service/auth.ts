@@ -24,28 +24,28 @@ export async function register(formData: RegisterUser) {
   // return test.message
 }
 
-export async function login(email: string, password: string): Promise<boolean> {
-  var isAuthenticated = false
-  const res = await fetch("http://localhost:3000/api/auth/login",{
-    method: "POST",
-    headers: {
-      "Content-Type": "aplication/json"
-    },
-    body: JSON.stringify({email,password})
-  })
-  .then(response => {
-    const statusCode = response.status
-    console.log(statusCode)
-    if(statusCode === 200){
-      isAuthenticated = true
-    }else{
-      isAuthenticated = false
-    }
-  })
-  .catch(error => {
-    console.log("Error: ", error)
-    isAuthenticated = false
-  })
-  return isAuthenticated
-}
+// export async function login(email: string, password: string): Promise<boolean> {
+//   var isAuthenticated = false
+//   const res = await fetch("http://localhost:3000/api/auth/login",{
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "aplication/json"
+//     },
+//     body: JSON.stringify({email,password})
+//   })
+//   .then(response => {
+//     const statusCode = response.status
+//     console.log(statusCode)
+//     if(statusCode === 200){
+//       isAuthenticated = true
+//     }else{
+//       isAuthenticated = false
+//     }
+//   })
+//   .catch(error => {
+//     console.log("Error: ", error)
+//     isAuthenticated = false
+//   })
+//   return isAuthenticated
+// }
 

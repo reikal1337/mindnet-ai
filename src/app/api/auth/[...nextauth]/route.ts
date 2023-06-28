@@ -4,11 +4,16 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prismaClient";
 import type { Adapter } from "next-auth/adapters"
-import { login } from "@/service/auth";
+// import { login } from "@/service/auth";
+const bcrypt = require("bcrypt")
+
 
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as Adapter,
+  // adapter: PrismaAdapter(prisma) as Adapter,
+  session: {
+    strategy: "jwt"
+  },
   providers: [
     // GoogleProvider({
     //     clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -25,20 +30,51 @@ export const authOptions: NextAuthOptions = {
         email: {label: "Email", type: "email", placeholder: "youremail@email.com"},
         password: {  label: "Password", type: "password", placeholder: "password..." }
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const {email, password } = credentials as LoginUser
-          const isAuthenticated = await login(email, password)
-          if(isAuthenticated){
-            console.log("Logged in!")
-            return credentials
+        if(!email ||!password) return null
+
+        const user = await prisma.user.findUnique({
+          where: {
+              email: email
           }
-          console.log("Didin't log in!")
-          return null
+        })
+        if(!user) return null
+
+        const correctPassword = await bcrypt.compare(password, user.password)
+        if(!correctPassword) return null
+
+        return{
+          id: user.id,
+          email: user.email,
+
+        }
       }
     })
   ],
   callbacks: {
+    session({session, token}){
+      console.log('Session Callback', { session, token })
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id
+        }
+      }
+    },
+    jwt: ({token, user}) => {
+      console.log('JWT Callback', { token, user })
+      if(user) {
+        return{
+          ...token,
+          id: user.id
+        }
+      }
+      return token
+    },
     async signIn(user, account, profile) {
+      console.log("signIn")
       // Custom signIn callback
       // This callback is called after a successful sign-in
 
@@ -46,9 +82,9 @@ export const authOptions: NextAuthOptions = {
       return 'http://localhost:3000/';
     }
   },
-  pages: {
-    signIn: "/login"
-  }
+  // pages: {
+  //   signIn: "/login"
+  // }
 }
 
 

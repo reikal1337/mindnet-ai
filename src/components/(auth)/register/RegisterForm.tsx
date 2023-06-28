@@ -1,7 +1,6 @@
 "use client"
 import { isValidPassword, isValidUsername, passowrdRegex, usernameRegex } from '@/lib/validation/auth'
 import { register } from '@/service/auth'
-import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 
 function RegisterForm() {
