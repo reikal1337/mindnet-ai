@@ -10,10 +10,11 @@ const bcrypt = require("bcrypt")
 
 
 export const authOptions: NextAuthOptions = {
-  // adapter: PrismaAdapter(prisma) as Adapter,
+  adapter: PrismaAdapter(prisma) as Adapter,
   session: {
     strategy: "jwt"
   },
+  secret: process.env.JWT_SECRET,
   providers: [
     // GoogleProvider({
     //     clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -21,11 +22,7 @@ export const authOptions: NextAuthOptions = {
     //   }
     // ),
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
       name: 'credentials',
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
       credentials: {
         email: {label: "Email", type: "email", placeholder: "youremail@email.com"},
         password: {  label: "Password", type: "password", placeholder: "password..." }
@@ -43,9 +40,9 @@ export const authOptions: NextAuthOptions = {
 
         const correctPassword = await bcrypt.compare(password, user.password)
         if(!correctPassword) return null
-
         return{
           id: user.id,
+          name: user.username,
           email: user.email,
 
         }
@@ -54,37 +51,29 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     session({session, token}){
-      console.log('Session Callback', { session, token })
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id
-        }
-      }
+      session.user.id = token.id
+      return session
     },
-    jwt: ({token, user}) => {
-      console.log('JWT Callback', { token, user })
-      if(user) {
-        return{
-          ...token,
-          id: user.id
-        }
+    jwt: ({token,account, user}) => {
+      if(account){
+        token.accessToken = account.access_token
+        token.id = user.id
       }
+      console.log("user: ", user)
+      console.log("token: ",token)
       return token
     },
-    async signIn(user, account, profile) {
-      console.log("signIn")
-      // Custom signIn callback
-      // This callback is called after a successful sign-in
+    async signIn() {
+      return Promise.resolve(true);
+    },
+    async redirect() {
+      return Promise.resolve("/");
+    },
 
-      // Redirect the user to the home page
-      return 'http://localhost:3000/';
-    }
   },
-  // pages: {
-  //   signIn: "/login"
-  // }
+  pages: {
+    signIn: "/login"
+  }
 }
 
 

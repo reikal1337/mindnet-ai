@@ -8,10 +8,10 @@ type Props = {
     children: ReactNode
 }
  
-function Provider({ children, session}: Props) {
+function Provider({ children }:Props) {
 
   return (
-    <SessionProvider session={session} >
+    <SessionProvider >
       {children}
     </SessionProvider>
   )

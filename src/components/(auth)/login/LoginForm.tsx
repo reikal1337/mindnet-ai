@@ -1,5 +1,6 @@
 "use client"
 import { signIn } from 'next-auth/react'
+import { redirect } from 'next/dist/server/api-utils'
 import { useState } from 'react'
 
 function LoginForm() {
@@ -19,15 +20,16 @@ const [error,setError] = useState<string>("")
         }
     
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log("Login")
     
-        signIn("credentials", {
-            redirect: false,
+      const res = await signIn("credentials", {
+            
             email: formData.email,
-            password: formData.password
+            password: formData.password,
         })
+        console.log("LoginForm",res)
     }
 
 return (
