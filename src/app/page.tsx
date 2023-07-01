@@ -2,8 +2,8 @@ import Image from 'next/image'
 import styles from './page.module.css'
 import { getServerSession } from 'next-auth'
 import { authOptions } from './api/auth/[...nextauth]/route'
-// import { useSession } from 'next-auth/react'
-// import { Session } from 'next-auth/core/types'
+import CreateFeedForm from '@/components/home/CreateFeedForm'
+import Feed from '@/components/home/feed'
 
 export default async function Home() {
 
@@ -12,13 +12,20 @@ export default async function Home() {
   return (
     <main >
       <h1>Home</h1>
-
-      <h2>Server Sesion</h2>
       {session ?
-      <p>{JSON.stringify(session,null, 2)}</p>
+      <>
+      <button>Global</button>
+      <button>Following</button>
+      <CreateFeedForm />
+      <Feed />
+      </>
       :
-      <p>No sesssion</p>
+      <Feed  />
+      
+
       }
+
+      
       
       
     </main>
