@@ -59,8 +59,6 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = account.access_token
         token.id = user.id
       }
-      console.log("user: ", user)
-      console.log("token: ",token)
       return token
     },
     async signIn() {

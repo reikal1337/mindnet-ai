@@ -4,8 +4,9 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request, res: Response){
     const users = await prisma.user.findMany();
     const accounts = await prisma.account.findMany();
+    const posts = await prisma.post.findMany();
 
-    return NextResponse.json({users,accounts}, {status: 200})
+    return NextResponse.json({users, accounts, posts}, {status: 200})
 }
 
 

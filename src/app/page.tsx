@@ -3,9 +3,10 @@ import styles from './page.module.css'
 import { getServerSession } from 'next-auth'
 import { authOptions } from './api/auth/[...nextauth]/route'
 import CreateFeedForm from '@/components/home/CreateFeedForm'
-import Feed from '@/components/home/feed'
+import Feed from '@/components/home/Feed'
 
 export default async function Home() {
+
 
   const session = await getServerSession(authOptions)
   // const {data, status} = useSession()
@@ -20,7 +21,7 @@ export default async function Home() {
       <Feed />
       </>
       :
-      <Feed  />
+      <Feed />
       
 
       }

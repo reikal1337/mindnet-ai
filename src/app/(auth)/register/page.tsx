@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/(auth)/register/RegisterForm"
+import RegisterForm from "@/components/(auth)/RegisterForm"
 
 function Register() {
   

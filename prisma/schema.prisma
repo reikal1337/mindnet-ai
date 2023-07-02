@@ -49,9 +49,10 @@ model User {
   sessions      Session[]
 
   posts     Post[]
-  likes     Like[]
-  followers User[] @relation(name: "Followers")
-  following User[] @relation(name: "Followers")
+  likes     Reaction[]
+  followers User[]     @relation(name: "Followers")
+  following User[]     @relation(name: "Followers")
+  Comment   Comment[]
 }
 
 model VerificationToken {
@@ -62,13 +63,32 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Like {
-  userId String
-  postId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+model Reaction {
+  id        String       @id @default(cuid())
+  userId    String
+  postId    String
+  type      ReactionType
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post?        @relation(fields: [postId], references: [id], onDelete: Cascade)
+  Comment   Comment?     @relation(fields: [commentId], references: [id])
+  commentId String?
 
-  @@id([userId, postId])
+  @@index([userId])
+  @@index([postId])
+  @@index([commentId])
+}
+
+model Comment {
+  id        String     @id @default(cuid())
+  userId    String
+  postId    String
+  content   String
+  createdAt DateTime   @default(now())
+  likes     Reaction[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
   @@index([userId])
   @@index([postId])
 }
@@ -79,8 +99,14 @@ model Post {
   content   String
   createdAt DateTime @default(now())
 
-  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  likes Like[]
+  user    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes   Reaction[]
+  Comment Comment[]
 
   @@index([userId])
+}
+
+enum ReactionType {
+  LIKE
+  DISLIKE
 }

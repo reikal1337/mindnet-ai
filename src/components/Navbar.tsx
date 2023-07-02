@@ -1,13 +1,12 @@
 "use client"
 import Link from 'next/link'
-import React from 'react'
+import React, { use } from 'react'
 import { useSession } from "next-auth/react"
 import { signOut } from 'next-auth/react'
 
 function Navbar() {
   const{data: session, status} = useSession()
-    
-console.log(status)
+  
   return (
     <nav>
         
@@ -17,7 +16,8 @@ console.log(status)
           <>
           <Link href="/profile">Profile</Link>
           <button onClick={() => signOut()}>Sign out</button>
-          <p>{}</p>
+          <p>{session.user.name}</p>
+          
           </>
           :
           <>
