@@ -1,17 +1,20 @@
 "use client"
 
 import { createPost } from "@/service/home"
+import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
 
 function CreateFeedForm() {
-
   const [formData,setFormData] = useState<string>("")
   const [error, setError] = useState<string>("")
+
+  const router = useRouter()
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const res = await createPost(formData)
     setError(res.message)
+    router.refresh()
     console.log(res)
   }
 

@@ -14,10 +14,8 @@ function Navbar() {
         
         {status === "authenticated" ?
           <>
-          <Link href="/profile">Profile</Link>
-          <button onClick={() => signOut()}>Sign out</button>
-          <p>{session.user.name}</p>
-          
+          <Link href="/profile">{session.user.name}</Link>
+          <button onClick={() => signOut()}>Sign out</button>          
           </>
           :
           <>

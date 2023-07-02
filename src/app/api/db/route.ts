@@ -11,7 +11,8 @@ export async function GET(req: Request, res: Response){
 
 
 export async function DELETE(req: Request, res: Response){
-    await prisma.user.deleteMany();
-    await prisma.account.deleteMany();
+    // await prisma.user.deleteMany();
+    // await prisma.account.deleteMany();
+    await prisma.post.deleteMany();
     return NextResponse.json({message: "Tables user,accounts deleted!"})
 }

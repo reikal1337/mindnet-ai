@@ -8,11 +8,14 @@ type Props = {
 
 function Post({user, content, createdAt}: Props) {
   return (
+    <>
+    <br/>
     <div>
         <span>{user}</span>
         <p>{content}</p>
         <span>{createdAt}</span>
     </div>
+    </>
   )
 }
 
