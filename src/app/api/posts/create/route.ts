@@ -19,6 +19,4 @@ export async function POST(req: NextRequest){
     }
     
     return NextResponse.json({message: "Post has to be 2-500 in lenght!"}, {status: 406})
-
-
 }

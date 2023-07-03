@@ -10,6 +10,13 @@ export async function GET(){
             id: true,
             content: true,
             createdAt: true,
+            _count: {
+                select:{
+                    likes: { where: {type: "LIKE"}},
+                    
+
+                }
+            },
             user: {
                 select: {
                     username: true

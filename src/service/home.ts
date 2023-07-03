@@ -25,3 +25,4 @@ export async function getAllPosts() {
 
     return response.json()
 }
+
