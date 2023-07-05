@@ -55,6 +55,14 @@ model User {
   Comment   Comment[]
 }
 
+// model User {
+//   id            String    @id @default(cuid())
+//   username      String    @unique
+
+//   posts     Post[]
+//   likes     Reaction[]
+// }
+
 model VerificationToken {
   identifier String
   token      String   @unique

@@ -1,11 +1,8 @@
 type Post =  {
     id: string
     content: string
-    _count: {
-        likes: number
-    }
+    likeCount: string
+    dislikeCount: string
     createdAt: string
-    user: {
-        username: string
-    }
+    username: string
 }

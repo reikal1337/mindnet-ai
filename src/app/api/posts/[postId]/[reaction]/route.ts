@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server"
 type Prop = {
         params: {
             postId: string,
-            reaction: boolean
+            reaction: string
         }
 }
 //Add reaction to post.
@@ -15,6 +15,9 @@ export async function PUT(req: Request,{params}: Prop){
     if(!session) return NextResponse.json({message: "You don't have persmision!"}, {status: 401})
     const { postId, reaction } = params
 
+    if(!postId || !["true","false"].includes(reaction)) return NextResponse.json({message: "Not acceptable request params!"}, {status: 406})
+    const reactionBoolean = reaction === "true"
+    
     const existingReaction = await prisma.reaction.findFirst({
         where: {
             postId: postId,
@@ -29,7 +32,7 @@ export async function PUT(req: Request,{params}: Prop){
                 id: existingReaction.id
             },
             data: {
-                type: reaction ? "LIKE" : "DISLIKE"
+                type: reactionBoolean ? "LIKE" : "DISLIKE"
             }
         })
         return NextResponse.json({message: "Your reaction has been updated!"}, {status: 200})
@@ -38,7 +41,7 @@ export async function PUT(req: Request,{params}: Prop){
             data: {
                 postId: postId,
                 userId: session.user.id,
-                type: reaction ? "LIKE" : "DISLIKE",
+                type: reactionBoolean ? "LIKE" : "DISLIKE",
             }
         })
         return NextResponse.json({message: "Your reaction has been added!"}, {status: 201})

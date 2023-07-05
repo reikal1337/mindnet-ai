@@ -6,13 +6,14 @@ type Props = {
     id: string,
     user: string,
     content: string,
-    likes: number,
+    likes: string,
+    dislikes: string
     createdAt: string,
 }
 
 
 
-function Post({id, user, content, likes, createdAt}: Props) {
+function Post({id, user, content, likes,dislikes , createdAt}: Props) {
 
   const handleReaction = (isLike: boolean) => {
     if(isLike){
@@ -33,7 +34,8 @@ function Post({id, user, content, likes, createdAt}: Props) {
         <span>{createdAt}</span>
         <button onClick={() => handleReaction(true)} >Like</button>
         <span>{likes}</span>
-        <button onClick={() => handleReaction(false)} >Dilike</button>
+        <span>{dislikes}</span>
+        <button onClick={() => handleReaction(false)} >Dislike</button>
     </div>
     </>
   )
