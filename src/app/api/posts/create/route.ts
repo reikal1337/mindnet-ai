@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prismaClient"
 
 export async function POST(req: NextRequest){
     const session = await getServerSession(authOptions)
-    if(!session) return NextResponse.json({message: "You don't have persmision!"}, {status: 401}) 
+    if(!session) return NextResponse.json({message: "You don't have persmision!"}, {status: 401})
     const body = await req.json() as string
     if(body.length >= 2 && body.length <= 500){
         const newTweet = await prisma.post.create({

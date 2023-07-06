@@ -17,8 +17,14 @@ export async function createPost(formData: string) {
   }
 
 export async function getAllPosts() {
-    const response = await fetch("http://localhost:3000/api/posts/all",{cache: "no-store"})
+    const response = await fetch("http://localhost:3000/api/posts/all",{
+      method: "GET",
+      cache: "no-store"})
+    // const res = await response.json()
+    // console.log(res)
     if(!response.ok){
+      
+
       throw new Error("Failed to get posts!")
     }
 

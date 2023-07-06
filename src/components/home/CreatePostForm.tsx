@@ -4,7 +4,7 @@ import { createPost } from "@/service/home"
 import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
 
-function CreateFeedForm() {
+function CreatePostForm() {
   const [formData,setFormData] = useState<string>("")
   const [error, setError] = useState<string>("")
 
@@ -38,4 +38,4 @@ function CreateFeedForm() {
   )
 }
 
-export default CreateFeedForm
+export default CreatePostForm
