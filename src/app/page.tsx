@@ -7,11 +7,10 @@ import Feed from '@/components/home/Feed'
 import { getAllPosts } from '@/service/home'
 
 export default async function Home() {
-  const data = await getAllPosts()
-  const posts: Post[] = data.posts 
-
   const session = await getServerSession(authOptions)
-  // console.log(posts)
+
+  const posts: Post[] = await getAllPosts(session)
+
   return (
     <main >
       <h1>Home</h1>
