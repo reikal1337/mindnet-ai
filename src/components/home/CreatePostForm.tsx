@@ -1,6 +1,6 @@
 "use client"
 
-import { createPost } from "@/service/home"
+import { createPost } from "@/service/client/home"
 import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
 

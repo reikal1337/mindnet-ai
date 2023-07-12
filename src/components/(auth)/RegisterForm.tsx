@@ -1,6 +1,6 @@
 "use client"
 import { isValidPassword, isValidUsername, passowrdRegex, usernameRegex } from '@/lib/validation/auth'
-import { register } from '@/service/auth'
+import { register } from '@/service/client/auth'
 import { useState } from 'react'
 
 function RegisterForm() {

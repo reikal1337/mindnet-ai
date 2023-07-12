@@ -1,19 +1,11 @@
 "use client"
 
-import { setPostReaction } from "@/service/post"
+import { setPostReaction } from "@/service/client/post"
 
-type Props = {
-    id: string,
-    user: string,
-    content: string,
-    likes: string,
-    dislikes: string
-    createdAt: string,
-}
+function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedByUser, dislikedByUser}: Post) {
 
-
-
-function Post({id, user, content, likes,dislikes , createdAt}: Props) {
+  const liked = JSON.parse(likedByUser)
+  const disliked = JSON.parse(dislikedByUser)
 
   const handleReaction = (isLike: boolean) => {
     if(isLike){
@@ -29,13 +21,13 @@ function Post({id, user, content, likes,dislikes , createdAt}: Props) {
     <>
     <br/>
     <div>
-        <span>{user}</span>
+        <span>{username}</span>
         <p>{content}</p>
         <span>{createdAt}</span>
-        <button onClick={() => handleReaction(true)} >Like</button>
-        <span>{likes}</span>
-        <span>{dislikes}</span>
-        <button onClick={() => handleReaction(false)} >Dislike</button>
+        <button style={{backgroundColor: liked ? "blue": 'initial'}}onClick={() => handleReaction(true)} >Like</button>
+        <span>{likeCount}</span>
+        <span>{dislikeCount}</span>
+        <button style={{backgroundColor: disliked ? "red": 'initial'}}  onClick={() => handleReaction(false)} >Dislike</button>
     </div>
     </>
   )

@@ -1,8 +1,10 @@
 type Post =  {
-    id: string
-    content: string
-    likeCount: string
-    dislikeCount: string
-    createdAt: string
-    username: string
+    id: string,
+    content: string,
+    createdAt: string,
+    username: string,
+    likeCount: string,
+    dislikeCount: string,
+    likedByUser: string,
+    dislikedByUser: string,
 }
