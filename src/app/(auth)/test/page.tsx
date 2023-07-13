@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react"
 
 type Props = {}
 
-const page = (props: Props) => {
+const TestPage = (props: Props) => {
     const{data: session, status} = useSession({
         required: true
     })
@@ -20,4 +20,4 @@ const page = (props: Props) => {
   )
 }
 
-export default page
+export default TestPage

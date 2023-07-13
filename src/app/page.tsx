@@ -1,12 +1,9 @@
-import Image from 'next/image'
-import styles from './page.module.css'
-import { Session, getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth'
 import { authOptions } from './api/auth/[...nextauth]/route'
 import CreatePostForm from '@/components/home/CreatePostForm'
 import Feed from '@/components/home/Feed'
 import { getAllPosts } from '@/service/server/home'
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
-import { cookies, headers } from "next/headers";
+
  
 
 

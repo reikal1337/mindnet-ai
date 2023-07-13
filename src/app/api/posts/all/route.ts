@@ -15,26 +15,6 @@ import { Prisma } from "@prisma/client"
 export async function GET(req: Request){
   const session = await getServerSession(authOptions)
 
-    // const posts = await prisma.post.findMany({
-    //     select: {
-    //         id: true,
-    //         content: true,
-    //         createdAt: true,
-    //         _count: {
-    //             select:{
-    //                 likes: { where: {type: "LIKE"}},
-                    
-    //             },
-    //         },
-    //         user: {
-    //             select: {
-    //                 username: true
-    //             }
-    //         }
-    //     },
-        
-    // })
- 
     const posts: Post[] = await prisma.$queryRaw(
       Prisma.sql`
       SELECT
@@ -81,6 +61,7 @@ export async function GET(req: Request){
       likedByUser,
       dislikedByUser
       `)
+      
     return NextResponse.json(posts, {status: 200})
 
 }
