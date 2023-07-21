@@ -2,6 +2,8 @@
 
 import { setPostReaction } from "@/service/client/post"
 import { useState } from "react"
+import { useSession } from "next-auth/react"
+import Link from "next/link"
 
 function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedByUser, dislikedByUser}: Post) {
   const [isLiked,setIsLiked] = useState(JSON.parse(likedByUser))
@@ -9,6 +11,8 @@ function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedB
 
   const [likedCount, setLikedCount] = useState(parseInt(likeCount))
   const [dislikedCount, setDislikedCount] = useState(parseInt(dislikeCount))
+
+  const { data: session } = useSession()
 
 
   const handleReaction = (isLike: boolean) => {
@@ -19,9 +23,11 @@ function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedB
       }else{
         setIsLiked(true)
         setLikedCount(prevState => prevState + 1)
-
-        setIsDisliked(false)
+        if(isDisliked){
+          setIsDisliked(false)
         setDislikedCount(prevState => prevState - 1)
+        }
+        
       }
       setPostReaction(id,"like")
     }else{
@@ -31,9 +37,11 @@ function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedB
       }else{
         setIsDisliked(true)
         setDislikedCount(prevState => prevState + 1)
-
-        setIsLiked(false)
-        setLikedCount(prevState => prevState - 1)
+        if(isLiked){
+          setIsLiked(false)
+          setLikedCount(prevState => prevState - 1)
+        }
+        
       }
       setPostReaction(id,"dislike")
     }
@@ -43,13 +51,13 @@ function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedB
     <>
     <br/>
     <div>
-        <span>{username}</span>
+        <Link href={`user/${username}`}>{username}</Link>
         <p>{content}</p>
         <span>{createdAt}</span>
-        <button style={{backgroundColor: isLiked ? "blue": 'initial'}}onClick={() => handleReaction(true)} >Like</button>
+        {session &&  <button style={{backgroundColor: isLiked ? "blue": 'initial'}}onClick={() => handleReaction(true)} >Like</button>}
         <span>{likedCount}</span>
         <span>{dislikedCount}</span>
-        <button style={{backgroundColor: isDisliked ? "red": 'initial'}}  onClick={() => handleReaction(false)} >Dislike</button>
+        {session && <button style={{backgroundColor: isDisliked ? "red": 'initial'}}  onClick={() => handleReaction(false)} >Dislike</button>}
     </div>
     </>
   )

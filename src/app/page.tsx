@@ -21,15 +21,8 @@ const posts: Post[] = await getAllPosts()
       <Feed posts={posts} />
       </>
       :
-      <>
-      <h2>Logged in</h2>
       <Feed posts={posts} />
-      </>
       }
-
-      
-      
-      
     </main>
   )
 }
