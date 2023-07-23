@@ -51,13 +51,14 @@ function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedB
     <>
     <br/>
     <div>
-        <Link href={`user/${username}`}>{username}</Link>
+        <Link href={`/user/${username}`}>{username}</Link>
         <p>{content}</p>
         <span>{createdAt}</span>
-        {session &&  <button style={{backgroundColor: isLiked ? "blue": 'initial'}}onClick={() => handleReaction(true)} >Like</button>}
+        <br />
+        {session &&  <button style={{backgroundColor: isLiked ? "blue": 'initial'}} onClick={() => handleReaction(true)} >Like</button>}
         <span>{likedCount}</span>
         <span>{dislikedCount}</span>
-        {session && <button style={{backgroundColor: isDisliked ? "red": 'initial'}}  onClick={() => handleReaction(false)} >Dislike</button>}
+        {session && <button style={{backgroundColor: isDisliked ? "red": 'initial'}} onClick={() => handleReaction(false)} >Dislike</button>}
     </div>
     </>
   )

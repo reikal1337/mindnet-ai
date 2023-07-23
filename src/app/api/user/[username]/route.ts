@@ -29,52 +29,53 @@ export async function GET(req: Request,{params}: Prop){
     if(!retrievedUser) return NextResponse.json({message: "Such user doesn't exist!"}, {status: 406})
 
     const posts: Post[]= await prisma.$queryRaw(
-        Prisma.sql`
-        SELECT
-        p.id,
-        p.content,
-        p.createdAt,
-        u.username,
-        CONVERT(
-          COUNT(
-            CASE WHEN r.type = 'LIKE'
-            AND r.commentId IS NULL THEN 1 END
-          ),
-          CHAR
-        ) AS likeCount,
-        CONVERT(
-          COUNT(
-            CASE WHEN r.type = 'DISLIKE'
-            AND r.commentId IS NULL THEN 1 END
-          ),
-          CHAR
-        ) AS dislikeCount,
-        IF(
-          r.type = 'LIKE'
-          AND r.commentId IS NULL
-          AND r.userId = ${session?.user.id},
-          "true",
-          "false"
-        ) AS likedByUser,
-        IF(
-          r.type = 'DISLIKE'
-          AND r.commentId IS NULL
-          AND r.userId = ${session?.user.id},
-          "true",
-          "false"
-        ) AS dislikedByUser
-      FROM Post p
-      JOIN User u ON u.id = p.userId
-      LEFT JOIN Reaction r ON r.postId = p.id
-      WHERE p.userId = ${retrievedUser.id}
-      GROUP BY
-        p.id,
-        p.content,
-        p.createdAt,
-        u.username,
-        likedByUser,
-        dislikedByUser
-        `)
+      Prisma.sql`
+            SELECT
+            p.id,
+            p.content,
+            p.createdAt,
+            u.username,
+            CONVERT(
+                IFNULL(likes.count, 0),
+                CHAR
+            ) AS likeCount,
+            CONVERT(
+                IFNULL(dislikes.count, 0),
+                CHAR
+            ) AS dislikeCount,
+            IF(
+                r.type = 'LIKE'
+                AND r.commentId IS NULL
+                AND r.userId = ${session?.user.id},
+                "true",
+                "false"
+            ) AS likedByUser,
+            IF(
+                r.type = 'DISLIKE'
+                AND r.commentId IS NULL
+                AND r.userId = ${session?.user.id},
+                "true",
+                "false"
+            ) AS dislikedByUser
+        FROM Post p
+        JOIN User u ON u.id = p.userId
+        LEFT JOIN (
+            SELECT postId, COUNT(*) AS count
+            FROM Reaction
+            WHERE type = 'LIKE' AND commentId IS NULL
+            GROUP BY postId
+        ) likes ON p.id = likes.postId
+        LEFT JOIN (
+            SELECT postId, COUNT(*) AS count
+            FROM Reaction
+            WHERE type = 'DISLIKE' AND commentId IS NULL
+            
+            GROUP BY postId
+        ) dislikes ON p.id = dislikes.postId
+        LEFT JOIN Reaction r ON r.postId = p.id AND r.userId = ${session?.user.id}
+        WHERE p.userId = ${retrievedUser.id}
+        `
+    )
         return NextResponse.json(posts, {status: 200})
 
 }
