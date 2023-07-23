@@ -2,7 +2,6 @@
 
 import { setPostReaction } from "@/service/client/post"
 import { useState } from "react"
-import { useSession } from "next-auth/react"
 import Link from "next/link"
 
 
@@ -12,9 +11,6 @@ function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedB
 
   const [likedCount, setLikedCount] = useState(parseInt(likeCount))
   const [dislikedCount, setDislikedCount] = useState(parseInt(dislikeCount))
-
-  // const { data: session } = useSession()
-
 
   const handleReaction = (isLike: boolean) => {
     if(isLike){

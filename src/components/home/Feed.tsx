@@ -13,7 +13,6 @@ async function Feed({posts,loggedIn}: Props) {
     <>
     {posts.length > 0 ? posts.map((post) =>{
       const createdAtFormated = getTimeAgo(post.createdAt)
-
       return (
       <Post key={post.id} {...post} loggedIn={loggedIn} createdAt={createdAtFormated} />
       )
