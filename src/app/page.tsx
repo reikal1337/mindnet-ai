@@ -18,10 +18,10 @@ const posts: Post[] = await getAllPosts()
       <button>Global</button>
       <button>Following</button>
       <CreatePostForm />
-      <Feed posts={posts} />
+      <Feed loggedIn={true} posts={posts} />
       </>
       :
-      <Feed posts={posts} />
+      <Feed loggedIn={false} posts={posts} />
       }
     </main>
   )

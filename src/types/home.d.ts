@@ -8,3 +8,7 @@ type Post =  {
     likedByUser: string,
     dislikedByUser: string,
 }
+
+type PostAuth = Post & {
+    loggedIn: boolean
+}

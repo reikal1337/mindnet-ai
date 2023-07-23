@@ -5,14 +5,15 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 
-function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedByUser, dislikedByUser}: Post) {
+
+function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedByUser, dislikedByUser, loggedIn}: PostAuth) {
   const [isLiked,setIsLiked] = useState(JSON.parse(likedByUser))
   const [isDisliked,setIsDisliked] = useState(JSON.parse(dislikedByUser))
 
   const [likedCount, setLikedCount] = useState(parseInt(likeCount))
   const [dislikedCount, setDislikedCount] = useState(parseInt(dislikeCount))
 
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
 
 
   const handleReaction = (isLike: boolean) => {
@@ -55,10 +56,10 @@ function Post({id, content ,createdAt ,username, likeCount, dislikeCount, likedB
         <p>{content}</p>
         <span>{createdAt}</span>
         <br />
-        {session &&  <button style={{backgroundColor: isLiked ? "blue": 'initial'}} onClick={() => handleReaction(true)} >Like</button>}
+        {loggedIn &&  <button style={{backgroundColor: isLiked ? "blue": 'initial'}} onClick={() => handleReaction(true)} >Like</button>}
         <span>{likedCount}</span>
         <span>{dislikedCount}</span>
-        {session && <button style={{backgroundColor: isDisliked ? "red": 'initial'}} onClick={() => handleReaction(false)} >Dislike</button>}
+        {loggedIn && <button style={{backgroundColor: isDisliked ? "red": 'initial'}} onClick={() => handleReaction(false)} >Dislike</button>}
     </div>
     </>
   )

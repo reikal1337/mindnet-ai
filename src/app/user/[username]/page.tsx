@@ -16,7 +16,7 @@ async function User({params}: Props) {
     <>
       <div>{params.username}</div>
     {posts.length > 0 ?
-      <Feed posts={posts} />
+      <Feed loggedIn={true} posts={posts} />
       :
       <h2>No posts!</h2>
     }
